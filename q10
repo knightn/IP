@@ -1,0 +1,105 @@
+#include <stdio.h> 
+
+#include <stdlib.h> 
+
+  
+
+#define WIDTH 5 
+
+#define HEIGHT 5 
+
+  
+
+// Sobel operator for edge detection 
+
+int sobel_operator(int window[WIDTH][HEIGHT]) { 
+
+    int sobel_x[3][3] = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}}; 
+
+    int sobel_y[3][3] = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}}; 
+
+  
+
+    int gx = 0, gy = 0; 
+
+  
+
+    for (int i = 0; i < WIDTH; i++) { 
+
+        for (int j = 0; j < HEIGHT; j++) { 
+
+            gx += sobel_x[i][j] * window[i][j]; 
+
+            gy += sobel_y[i][j] * window[i][j]; 
+
+        } 
+
+    } 
+
+  
+
+    return abs(gx) + abs(gy); 
+
+} 
+
+  
+
+int main() { 
+
+    int image[5][5] = {{2, 0, 2, 0, 2}, 
+
+                       {0, 2, 0, 2, 0}, 
+
+                       {2, 0, 2, 0, 2}, 
+
+                       {0, 2, 0, 2, 0}, 
+
+                       {2, 0, 2, 0, 2}}; 
+
+  
+
+    printf("Original Image:\n"); 
+
+    for (int i = 0; i < WIDTH; i++) { 
+
+        for (int j = 0; j < HEIGHT; j++) { 
+
+            printf("%d ", image[i][j]); 
+
+        } 
+
+        printf("\n"); 
+
+    } 
+
+  
+
+    printf("\nEdge Detection Result:\n"); 
+
+    for (int i = 1; i < WIDTH - 1; i++) { 
+
+        for (int j = 1; j < HEIGHT - 1; j++) { 
+
+            int window[3][3] = {{image[i-1][j-1], image[i-1][j], image[i-1][j+1]}, 
+
+                                {image[i][j-1], image[i][j], image[i][j+1]}, 
+
+                                {image[i+1][j-1], image[i+1][j], image[i+1][j+1]}}; 
+
+  
+
+            int result = sobel_operator(window); 
+
+            printf("%d ", result); 
+
+        } 
+
+        printf("\n"); 
+
+    } 
+
+  
+
+    return 0; 
+
+} 
